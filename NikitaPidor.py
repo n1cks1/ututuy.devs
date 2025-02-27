@@ -1,2 +1,2 @@
 print("ti pidor")
-print('111')
+print("lwaf;jbwrf")
