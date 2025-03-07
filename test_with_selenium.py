@@ -4,11 +4,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import json
 
+# Инициализация драйвера
 driver = webdriver.Firefox()
 
+# Открываем страницу
 driver.get('https://patents.google.com/?q=te+OR+(invention)&language=SPANISH&num=50')
 
-patents_data = []  # Список для хранения данных о патентах
+patents_data = [] 
 
 try:
     WebDriverWait(driver, 10).until(
@@ -19,18 +21,24 @@ try:
 
     for patent in results:
         title = patent.find_element(By.CSS_SELECTOR, '.style-scope.raw-html').text
-        name = patent.find_element(By.CSS_SELECTOR, '.bullet-before.style-scope.search-result-item .style-scope.search-result-item .style-scope.raw-html').text
-        date = patent.find_element(By.XPATH, '//h4[contains(@class, "dates")]').text
-        
+        full_date = patent.find_element(By.XPATH, './/h4[contains(@class, "dates")]').text 
+        for part in full_date.split("•"):
+            if "Published" in part:
+                    date = part.replace("Published", "").strip() #strip() убирает пробелы, без него будут пробелы в начале даты
+                    break
+
+        spans = patent.find_elements(By.ID, 'htmlContent')
+        text_patent = spans[-1].text
+
 
         # Добавляем данные в список
         patents_data.append({
             "title": title,
-            "name": name,
-            "date": date
+            "date": date,
+            "text_patent": text_patent,
         })
 
-        print(f'Title: {title},\nName autor patents: {name}\nDate: {date} \n\n')
+        print(f'Title: {title},\nDate: {date},\nText patent: {text_patent}\n\n')
 
 finally:
     # Закрытие браузера
@@ -41,4 +49,3 @@ with open('patents.json', 'w', encoding='utf-8') as f:
     json.dump(patents_data, f, ensure_ascii=False, indent=4)
 
 print("Данные патентов сохранены в файл patents.json")
-
