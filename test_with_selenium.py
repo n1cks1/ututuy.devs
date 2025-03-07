@@ -6,7 +6,7 @@ import json
 
 driver = webdriver.Firefox()
 
-driver.get('https://patents.google.com/?q=te+OR+(invention)&language=SPANISH')
+driver.get('https://patents.google.com/?q=te+OR+(invention)&language=SPANISH&num=50')
 
 patents_data = []  # Список для хранения данных о патентах
 
