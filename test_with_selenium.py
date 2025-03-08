@@ -10,12 +10,10 @@ firefox_dev_path = r'C:\Program Files\Firefox Developer Edition\firefox.exe'
 
 options = webdriver.FirefoxOptions()
 options.binary_location = firefox_dev_path
+# options.add_argument("--headless")
 
 
 driver = webdriver.Firefox(options=options)
-
-# Открываем страницу
-# driver.get('https://patents.google.com/?q=te+OR+(invention)&language=SPANISH&num=50')
 
 urls = [
     'https://patents.google.com/?q=("energía+renovable"+OR+"energía+solar"+OR+"energía+eólica")&language=SPANISH&num=50&oq="energía+renovable"+OR+"energía+solar"+OR+"energía+eólica"+language:SPANISH&page=',
@@ -27,16 +25,16 @@ urls = [
 ]
 
 patents_data = []
-countPage = 0
-count = 0
+# countPage = 0
+# count = 0
 try:
     for url in urls:
         try:
             for num in range(20):
                 link_for_pars = url + str(num)
-                countPage += 1
-                print(link_for_pars)
-                print(countPage)
+                # countPage += 1
+                # print(link_for_pars)
+                # print(countPage)
 
                 driver.get(link_for_pars)
 
@@ -56,17 +54,19 @@ try:
 
                     spans = patent.find_elements(By.ID, 'htmlContent')
                     text_patent = spans[-1].text
+                    author = spans[-2].text
 
-                    count+=1
+                    # count+=1
 
                     patents_data.append({
                         "title": title,
                         "date": date,
                         "text_patent": text_patent,
+                        "author": author,
                     })
 
                     # print(f'Title: {title},\nDate: {date},\nText patent: {text_patent}\n\n')
-                print(count)
+                # print(count)
 
         except TimeoutException:
             print(f"Ошибка: TimeoutException при обработке ссылки {link_for_pars}. Переход к следующей ссылке.")
@@ -82,4 +82,4 @@ with open('patents.json', 'w', encoding='utf-8') as f:
     json.dump(patents_data, f, ensure_ascii=False, indent=4)
 
 print("Данные патентов сохранены в файл patents.json")
-print(f'Количество записей = {count}')
+# print(f'Количество записей = {count}')
