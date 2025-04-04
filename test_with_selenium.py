@@ -5,15 +5,15 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 import json
 
-# Инициализация драйвера
-firefox_dev_path = r'C:\Program Files\Firefox Developer Edition\firefox.exe'
+# # Инициализация драйвера
+# firefox_dev_path = r'C:\Program Files\Firefox Developer Edition\firefox.exe'
 
-options = webdriver.FirefoxOptions()
-options.binary_location = firefox_dev_path
-# options.add_argument("--headless")
+# options = webdriver.FirefoxOptions()
+# options.binary_location = firefox_dev_path
+# # options.add_argument("--headless")
 
 
-driver = webdriver.Firefox(options=options)
+driver = webdriver.Firefox()
 
 urls = [
     'https://patents.google.com/?q=("energía+renovable"+OR+"energía+solar"+OR+"energía+eólica")&language=SPANISH&num=50&oq="energía+renovable"+OR+"energía+solar"+OR+"energía+eólica"+language:SPANISH&page=',
